@@ -135,17 +135,51 @@ year: student.year_c || '',
         
         if (successful.length > 0) {
           const created = successful[0].data;
-          return {
+const studentResult = {
             Id: created.Id,
             name: created.name_c || '',
             email: created.email_c || '',
             major: created.major_c || '',
-year: created.year_c || '',
+            year: created.year_c || '',
             gpa: created.gpa_c || 0.0,
             phone: created.phone_c || '',
             enrollmentDate: created.enrollment_date_c || '',
             chemistry_marks_c: created.chemistry_marks_c || 0.0
           };
+
+          // Check if Chemistry marks are greater than 5.0 and send email
+          if (created.chemistry_marks_c && created.chemistry_marks_c > 5.0) {
+            try {
+              const { ApperClient } = window.ApperSDK;
+              const apperClient = new ApperClient({
+                apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+                apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+              });
+
+              const emailResult = await apperClient.functions.invoke(import.meta.env.VITE_SEND_CHEMISTRY_PASS_EMAIL, {
+                body: JSON.stringify({
+                  studentEmail: created.email_c,
+                  studentName: created.name_c
+                }),
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              });
+
+              const emailData = await emailResult.json();
+              if (emailData.success) {
+                toast.success('Chemistry pass notification sent successfully');
+              } else {
+                console.info(`apper_info: An error was received in this function: ${import.meta.env.VITE_SEND_CHEMISTRY_PASS_EMAIL}. The response body is: ${JSON.stringify(emailData)}.`);
+                toast.warning('Student created successfully, but email notification failed');
+              }
+            } catch (emailError) {
+              console.info(`apper_info: An error was received in this function: ${import.meta.env.VITE_SEND_CHEMISTRY_PASS_EMAIL}. The error is: ${emailError.message}`);
+              toast.warning('Student created successfully, but email notification failed');
+            }
+          }
+
+          return studentResult;
         }
       }
       

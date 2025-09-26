@@ -32,7 +32,8 @@ const [formData, setFormData] = useState({
     major: '',
     year: '',
     gpa: '',
-    phone: ''
+    phone: '',
+    chemistry_marks_c: ''
   });
 
   const yearOptions = [
@@ -124,7 +125,8 @@ setFormData({
       major: student.major,
       year: student.year,
       gpa: student.gpa.toString(),
-      phone: student.phone
+      phone: student.phone,
+      chemistry_marks_c: student.chemistry_marks_c ? student.chemistry_marks_c.toString() : ''
     });
     setIsEditModalOpen(true);
   };
@@ -143,12 +145,13 @@ setFormData({
 
   const resetForm = () => {
 setFormData({
-name: '',
+      name: '',
       email: '',
       major: '',
       year: '',
       gpa: '',
-      phone: ''
+      phone: '',
+      chemistry_marks_c: ''
     });
     setEditingStudent(null);
   };
@@ -359,6 +362,17 @@ name: '',
             />
           </FormField>
 
+          <FormField label="Chemistry Marks">
+            <Input
+              type="number"
+              step="0.1"
+              name="chemistry_marks_c"
+              value={formData.chemistry_marks_c}
+              onChange={handleInputChange}
+              placeholder="Enter chemistry marks"
+            />
+          </FormField>
+
           <div className="flex justify-end space-x-3 pt-4">
             <Button
               type="button"
@@ -438,13 +452,23 @@ name: '',
               />
             </FormField>
 </div>
-
 <FormField label="Phone Number">
             <Input
               name="phone"
               value={formData.phone}
               onChange={handleInputChange}
               placeholder="Enter phone number"
+            />
+          </FormField>
+
+          <FormField label="Chemistry Marks">
+            <Input
+              type="number"
+              step="0.1"
+              name="chemistry_marks_c"
+              value={formData.chemistry_marks_c}
+              onChange={handleInputChange}
+              placeholder="Enter chemistry marks"
             />
           </FormField>
 

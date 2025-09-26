@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import Button from '@/components/atoms/Button';
-import Card from '@/components/atoms/Card';
+import { Card } from '@/components/atoms/Card';
 import Modal from '@/components/atoms/Modal';
 import Input from '@/components/atoms/Input';
 import Select from '@/components/atoms/Select';

@@ -193,15 +193,15 @@ setFormData({
           placeholder="Search students..."
           className="md:col-span-1"
         />
-        <Select
+<Select
           value={selectedYear}
-          onChange={setSelectedYear}
+          onChange={(value) => setSelectedYear(value)}
           options={yearOptions}
           placeholder="Filter by Year"
         />
         <Select
           value={selectedMajor}
-          onChange={setSelectedMajor}
+          onChange={(value) => setSelectedMajor(value)}
           options={majorOptions}
           placeholder="Filter by Major"
         />

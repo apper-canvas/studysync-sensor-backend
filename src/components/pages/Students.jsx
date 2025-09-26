@@ -240,10 +240,11 @@ setFormData({
                     </div>
                   </div>
                   <div className="flex space-x-2">
-                    <Button
+<Button
                       size="sm"
                       variant="ghost"
                       onClick={() => handleEdit(student)}
+                      className="text-blue-600 hover:text-blue-700"
                     >
                       <ApperIcon name="Edit" size={16} />
                     </Button>

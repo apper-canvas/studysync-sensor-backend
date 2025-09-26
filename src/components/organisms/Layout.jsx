@@ -31,13 +31,15 @@ const Layout = ({ children }) => {
   const location = useLocation();
 
 const getPageTitle = () => {
-    switch (location.pathname) {
+switch (location.pathname) {
       case "/":
         return "Dashboard";
       case "/courses":
         return "Courses";
       case "/students":
         return "Students";
+      case "/departments":
+        return "Departments";
       case "/assignments":
         return "Assignments";
       case "/gpa":

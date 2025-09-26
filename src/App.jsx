@@ -7,6 +7,7 @@ import Layout from "@/components/organisms/Layout";
 import Dashboard from "@/components/pages/Dashboard";
 import Courses from "@/components/pages/Courses";
 import Students from "@/components/pages/Students";
+import Departments from "@/components/pages/Departments";
 import Assignments from "@/components/pages/Assignments";
 import GPACalculator from "@/components/pages/GPACalculator";
 import Login from '@/components/pages/Login';
@@ -15,7 +16,6 @@ import Callback from '@/components/pages/Callback';
 import ErrorPage from '@/components/pages/ErrorPage';
 import ResetPassword from '@/components/pages/ResetPassword';
 import PromptPassword from '@/components/pages/PromptPassword';
-
 // Create auth context
 export const AuthContext = createContext(null);
 
@@ -130,10 +130,11 @@ function App() {
         <Route path="/reset-password/:appId/:fields" element={<ResetPassword />} />
         <Route path="/*" element={
           <Layout>
-            <Routes>
+<Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/students" element={<Students />} />
+              <Route path="/departments" element={<Departments />} />
               <Route path="/assignments" element={<Assignments />} />
               <Route path="/gpa" element={<GPACalculator />} />
             </Routes>

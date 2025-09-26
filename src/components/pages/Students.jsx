@@ -26,13 +26,14 @@ const Students = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState(null);
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     name: '',
     email: '',
     major: '',
     year: '',
     gpa: '',
-    phone: ''
+    phone: '',
+    science_marks: ''
   });
 
   const yearOptions = [
@@ -118,13 +119,14 @@ const Students = () => {
 
   const handleEdit = (student) => {
     setEditingStudent(student);
-    setFormData({
+setFormData({
       name: student.name,
       email: student.email,
       major: student.major,
       year: student.year,
       gpa: student.gpa.toString(),
-      phone: student.phone
+      phone: student.phone,
+      science_marks: student.science_marks ? student.science_marks.toString() : ''
     });
     setIsEditModalOpen(true);
   };
@@ -143,12 +145,13 @@ const Students = () => {
 
   const resetForm = () => {
     setFormData({
-      name: '',
+name: '',
       email: '',
       major: '',
       year: '',
       gpa: '',
-      phone: ''
+      phone: '',
+      science_marks: ''
     });
     setEditingStudent(null);
   };
@@ -350,13 +353,23 @@ const Students = () => {
               />
             </FormField>
           </div>
-
-          <FormField label="Phone Number">
+<FormField label="Phone Number">
             <Input
               name="phone"
               value={formData.phone}
               onChange={handleInputChange}
               placeholder="Enter phone number"
+            />
+          </FormField>
+
+          <FormField label="Science Marks">
+            <Input
+              name="science_marks"
+              type="number"
+              step="0.1"
+              value={formData.science_marks}
+              onChange={handleInputChange}
+              placeholder="Enter science marks"
             />
           </FormField>
 
@@ -438,7 +451,7 @@ const Students = () => {
                 placeholder="0.00"
               />
             </FormField>
-          </div>
+</div>
 
           <FormField label="Phone Number">
             <Input
@@ -446,6 +459,17 @@ const Students = () => {
               value={formData.phone}
               onChange={handleInputChange}
               placeholder="Enter phone number"
+            />
+          </FormField>
+
+          <FormField label="Science Marks">
+            <Input
+              name="science_marks"
+              type="number"
+              step="0.1"
+              value={formData.science_marks}
+              onChange={handleInputChange}
+              placeholder="Enter science marks"
             />
           </FormField>
 

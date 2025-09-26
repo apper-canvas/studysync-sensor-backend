@@ -16,7 +16,7 @@ class StudentsService {
   async getAll() {
     try {
       const params = {
-        fields: [
+fields: [
           {"field": {"Name": "Id"}},
           {"field": {"Name": "name_c"}},
           {"field": {"Name": "email_c"}},
@@ -24,7 +24,8 @@ class StudentsService {
           {"field": {"Name": "year_c"}},
           {"field": {"Name": "gpa_c"}},
           {"field": {"Name": "phone_c"}},
-          {"field": {"Name": "enrollment_date_c"}}
+          {"field": {"Name": "enrollment_date_c"}},
+          {"field": {"Name": "chemistry_marks_c"}}
         ]
       };
       
@@ -42,8 +43,9 @@ class StudentsService {
         major: student.major_c || '',
         year: student.year_c || '',
         gpa: student.gpa_c || 0.0,
-        phone: student.phone_c || '',
-        enrollmentDate: student.enrollment_date_c || ''
+phone: student.phone_c || '',
+        enrollmentDate: student.enrollment_date_c || '',
+        chemistry_marks_c: student.chemistry_marks_c || 0.0
       }));
     } catch (error) {
       console.error("Error fetching students:", error?.response?.data?.message || error);
@@ -55,14 +57,15 @@ class StudentsService {
     try {
       const params = {
         fields: [
-          {"field": {"Name": "Id"}},
+{"field": {"Name": "Id"}},
           {"field": {"Name": "name_c"}},
           {"field": {"Name": "email_c"}},
           {"field": {"Name": "major_c"}},
           {"field": {"Name": "year_c"}},
           {"field": {"Name": "gpa_c"}},
           {"field": {"Name": "phone_c"}},
-          {"field": {"Name": "enrollment_date_c"}}
+          {"field": {"Name": "enrollment_date_c"}},
+          {"field": {"Name": "chemistry_marks_c"}}
         ]
       };
       
@@ -79,10 +82,11 @@ class StudentsService {
         name: student.name_c || '',
         email: student.email_c || '',
         major: student.major_c || '',
-        year: student.year_c || '',
+year: student.year_c || '',
         gpa: student.gpa_c || 0.0,
         phone: student.phone_c || '',
-        enrollmentDate: student.enrollment_date_c || ''
+        enrollmentDate: student.enrollment_date_c || '',
+        chemistry_marks_c: student.chemistry_marks_c || 0.0
       };
     } catch (error) {
       console.error(`Error fetching student ${id}:`, error?.response?.data?.message || error);
@@ -136,10 +140,11 @@ class StudentsService {
             name: created.name_c || '',
             email: created.email_c || '',
             major: created.major_c || '',
-            year: created.year_c || '',
+year: created.year_c || '',
             gpa: created.gpa_c || 0.0,
             phone: created.phone_c || '',
-            enrollmentDate: created.enrollment_date_c || ''
+            enrollmentDate: created.enrollment_date_c || '',
+            chemistry_marks_c: created.chemistry_marks_c || 0.0
           };
         }
       }
@@ -193,14 +198,15 @@ class StudentsService {
         if (successful.length > 0) {
           const updated = successful[0].data;
           return {
-            Id: updated.Id,
+Id: updated.Id,
             name: updated.name_c || '',
             email: updated.email_c || '',
             major: updated.major_c || '',
             year: updated.year_c || '',
             gpa: updated.gpa_c || 0.0,
             phone: updated.phone_c || '',
-            enrollmentDate: updated.enrollment_date_c || ''
+            enrollmentDate: updated.enrollment_date_c || '',
+            chemistry_marks_c: updated.chemistry_marks_c || 0.0
           };
         }
       }
@@ -240,7 +246,7 @@ class StudentsService {
         
         if (successful.length > 0) {
           const deleted = successful[0].data;
-          return {
+return {
             Id: deleted.Id,
             name: deleted.name_c || '',
             email: deleted.email_c || '',
@@ -248,7 +254,8 @@ class StudentsService {
             year: deleted.year_c || '',
             gpa: deleted.gpa_c || 0.0,
             phone: deleted.phone_c || '',
-            enrollmentDate: deleted.enrollment_date_c || ''
+            enrollmentDate: deleted.enrollment_date_c || '',
+            chemistry_marks_c: deleted.chemistry_marks_c || 0.0
           };
         }
       }
@@ -264,7 +271,7 @@ class StudentsService {
   async getByMajor(major) {
     try {
       const params = {
-        fields: [
+fields: [
           {"field": {"Name": "Id"}},
           {"field": {"Name": "name_c"}},
           {"field": {"Name": "email_c"}},
@@ -272,7 +279,8 @@ class StudentsService {
           {"field": {"Name": "year_c"}},
           {"field": {"Name": "gpa_c"}},
           {"field": {"Name": "phone_c"}},
-          {"field": {"Name": "enrollment_date_c"}}
+          {"field": {"Name": "enrollment_date_c"}},
+          {"field": {"Name": "chemistry_marks_c"}}
         ],
         where: [{"FieldName": "major_c", "Operator": "Contains", "Values": [major]}]
       };
@@ -285,14 +293,15 @@ class StudentsService {
       }
       
       return response.data.map(student => ({
-        Id: student.Id,
+Id: student.Id,
         name: student.name_c || '',
         email: student.email_c || '',
         major: student.major_c || '',
         year: student.year_c || '',
         gpa: student.gpa_c || 0.0,
         phone: student.phone_c || '',
-        enrollmentDate: student.enrollment_date_c || ''
+        enrollmentDate: student.enrollment_date_c || '',
+        chemistry_marks_c: student.chemistry_marks_c || 0.0
       }));
     } catch (error) {
       console.error("Error fetching students by major:", error?.response?.data?.message || error);
@@ -303,7 +312,7 @@ class StudentsService {
   async getByYear(year) {
     try {
       const params = {
-        fields: [
+fields: [
           {"field": {"Name": "Id"}},
           {"field": {"Name": "name_c"}},
           {"field": {"Name": "email_c"}},
@@ -311,7 +320,8 @@ class StudentsService {
           {"field": {"Name": "year_c"}},
           {"field": {"Name": "gpa_c"}},
           {"field": {"Name": "phone_c"}},
-          {"field": {"Name": "enrollment_date_c"}}
+          {"field": {"Name": "enrollment_date_c"}},
+          {"field": {"Name": "chemistry_marks_c"}}
         ],
         where: [{"FieldName": "year_c", "Operator": "EqualTo", "Values": [year]}]
       };
@@ -324,14 +334,15 @@ class StudentsService {
       }
       
       return response.data.map(student => ({
-        Id: student.Id,
+Id: student.Id,
         name: student.name_c || '',
         email: student.email_c || '',
         major: student.major_c || '',
         year: student.year_c || '',
         gpa: student.gpa_c || 0.0,
         phone: student.phone_c || '',
-        enrollmentDate: student.enrollment_date_c || ''
+        enrollmentDate: student.enrollment_date_c || '',
+        chemistry_marks_c: student.chemistry_marks_c || 0.0
       }));
     } catch (error) {
       console.error("Error fetching students by year:", error?.response?.data?.message || error);
@@ -342,7 +353,7 @@ class StudentsService {
   async search(query) {
     try {
       const params = {
-        fields: [
+fields: [
           {"field": {"Name": "Id"}},
           {"field": {"Name": "name_c"}},
           {"field": {"Name": "email_c"}},
@@ -350,7 +361,8 @@ class StudentsService {
           {"field": {"Name": "year_c"}},
           {"field": {"Name": "gpa_c"}},
           {"field": {"Name": "phone_c"}},
-          {"field": {"Name": "enrollment_date_c"}}
+          {"field": {"Name": "enrollment_date_c"}},
+          {"field": {"Name": "chemistry_marks_c"}}
         ],
         whereGroups: [{
           operator: "OR",
@@ -384,9 +396,10 @@ class StudentsService {
         email: student.email_c || '',
         major: student.major_c || '',
         year: student.year_c || '',
-        gpa: student.gpa_c || 0.0,
+gpa: student.gpa_c || 0.0,
         phone: student.phone_c || '',
-        enrollmentDate: student.enrollment_date_c || ''
+        enrollmentDate: student.enrollment_date_c || '',
+        chemistry_marks_c: student.chemistry_marks_c || 0.0
       }));
     } catch (error) {
       console.error("Error searching students:", error?.response?.data?.message || error);

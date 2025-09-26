@@ -1,0 +1,52 @@
+[
+  {
+    "Id": 1,
+    "name": "Introduction to Computer Science",
+    "code": "CS 101",
+    "creditHours": 3,
+    "instructor": "Prof. Johnson",
+    "currentGrade": "A",
+    "semester": "Fall 2024",
+    "color": "#2563eb"
+  },
+  {
+    "Id": 2,
+    "name": "Calculus I",
+    "code": "MATH 151",
+    "creditHours": 4,
+    "instructor": "Dr. Smith",
+    "currentGrade": "B+",
+    "semester": "Fall 2024",
+    "color": "#059669"
+  },
+  {
+    "Id": 3,
+    "name": "English Composition",
+    "code": "ENG 101",
+    "creditHours": 3,
+    "instructor": "Prof. Williams",
+    "currentGrade": "A-",
+    "semester": "Fall 2024",
+    "color": "#d97706"
+  },
+  {
+    "Id": 4,
+    "name": "Physics I",
+    "code": "PHYS 201",
+    "creditHours": 4,
+    "instructor": "Dr. Brown",
+    "currentGrade": "B",
+    "semester": "Spring 2024",
+    "color": "#7c3aed"
+  },
+  {
+    "Id": 5,
+    "name": "Data Structures",
+    "code": "CS 201",
+    "creditHours": 3,
+    "instructor": "Prof. Davis",
+    "currentGrade": "",
+    "semester": "Fall 2024",
+    "color": "#dc2626"
+  }
+]

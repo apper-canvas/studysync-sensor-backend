@@ -1,0 +1,98 @@
+[
+  {
+    "Id": 1,
+    "title": "Final Project Presentation",
+    "description": "Present final project to class and demonstrate key features",
+    "dueDate": "2024-12-15",
+    "courseId": 1,
+    "priority": "high",
+    "status": "pending",
+    "grade": "",
+    "pointsEarned": null,
+    "pointsTotal": null
+  },
+  {
+    "Id": 2,
+    "title": "Midterm Exam",
+    "description": "Comprehensive exam covering chapters 1-8",
+    "dueDate": "2024-11-20",
+    "courseId": 2,
+    "priority": "high",
+    "status": "completed",
+    "grade": "B+",
+    "pointsEarned": 87,
+    "pointsTotal": 100
+  },
+  {
+    "Id": 3,
+    "title": "Essay on Shakespeare",
+    "description": "5-page analysis of themes in Hamlet",
+    "dueDate": "2024-11-25",
+    "courseId": 3,
+    "priority": "medium",
+    "status": "pending",
+    "grade": "",
+    "pointsEarned": null,
+    "pointsTotal": null
+  },
+  {
+    "Id": 4,
+    "title": "Lab Report 3",
+    "description": "Motion and forces lab experimental report",
+    "dueDate": "2024-11-18",
+    "courseId": 4,
+    "priority": "medium",
+    "status": "completed",
+    "grade": "A",
+    "pointsEarned": 95,
+    "pointsTotal": 100
+  },
+  {
+    "Id": 5,
+    "title": "Programming Assignment 2",
+    "description": "Implement binary search tree with full documentation",
+    "dueDate": "2024-12-01",
+    "courseId": 5,
+    "priority": "high",
+    "status": "pending",
+    "grade": "",
+    "pointsEarned": null,
+    "pointsTotal": null
+  },
+  {
+    "Id": 6,
+    "title": "Homework Set 5",
+    "description": "Integration problems from chapter 6",
+    "dueDate": "2024-11-22",
+    "courseId": 2,
+    "priority": "low",
+    "status": "pending",
+    "grade": "",
+    "pointsEarned": null,
+    "pointsTotal": null
+  },
+  {
+    "Id": 7,
+    "title": "Research Paper Outline",
+    "description": "Detailed outline for final research paper",
+    "dueDate": "2024-11-16",
+    "courseId": 3,
+    "priority": "low",
+    "status": "completed",
+    "grade": "A-",
+    "pointsEarned": 92,
+    "pointsTotal": 100
+  },
+  {
+    "Id": 8,
+    "title": "Algorithm Analysis",
+    "description": "Compare sorting algorithms and analyze time complexity",
+    "dueDate": "2024-12-08",
+    "courseId": 1,
+    "priority": "medium",
+    "status": "pending",
+    "grade": "",
+    "pointsEarned": null,
+    "pointsTotal": null
+  }
+]

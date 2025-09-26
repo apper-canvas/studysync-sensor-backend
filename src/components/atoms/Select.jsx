@@ -3,7 +3,7 @@ import { cn } from "@/utils/cn";
 import ApperIcon from "@/components/ApperIcon";
 
 const Select = forwardRef(
-  ({ className, children, error, ...props }, ref) => {
+({ className, children, error, options, placeholder, ...props }, ref) => {
     return (
       <div className="relative">
         <select
@@ -18,7 +18,20 @@ const Select = forwardRef(
           ref={ref}
           {...props}
         >
-          {children}
+          {placeholder && (
+            <option value="" disabled>
+              {placeholder}
+            </option>
+          )}
+          {options ? (
+            options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))
+          ) : (
+            children
+          )}
         </select>
         <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
           <ApperIcon name="ChevronDown" size={16} className="text-slate-400" />

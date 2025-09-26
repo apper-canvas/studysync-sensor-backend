@@ -1,0 +1,82 @@
+[
+  {
+    "Id": 1,
+    "name": "Emily Johnson",
+    "email": "emily.johnson@university.edu",
+    "major": "Computer Science",
+    "year": "3",
+    "gpa": 3.85,
+    "phone": "(555) 123-4567",
+    "enrollmentDate": "2022-08-15"
+  },
+  {
+    "Id": 2,
+    "name": "Michael Chen",
+    "email": "michael.chen@university.edu",
+    "major": "Business Administration",
+    "year": "2",
+    "gpa": 3.42,
+    "phone": "(555) 234-5678",
+    "enrollmentDate": "2023-08-20"
+  },
+  {
+    "Id": 3,
+    "name": "Sarah Williams",
+    "email": "sarah.williams@university.edu",
+    "major": "Psychology",
+    "year": "4",
+    "gpa": 3.91,
+    "phone": "(555) 345-6789",
+    "enrollmentDate": "2021-08-18"
+  },
+  {
+    "Id": 4,
+    "name": "David Rodriguez",
+    "email": "david.rodriguez@university.edu",
+    "major": "Engineering",
+    "year": "1",
+    "gpa": 3.25,
+    "phone": "(555) 456-7890",
+    "enrollmentDate": "2024-08-25"
+  },
+  {
+    "Id": 5,
+    "name": "Jessica Liu",
+    "email": "jessica.liu@university.edu",
+    "major": "Mathematics",
+    "year": "Graduate",
+    "gpa": 3.94,
+    "phone": "(555) 567-8901",
+    "enrollmentDate": "2020-08-15"
+  },
+  {
+    "Id": 6,
+    "name": "Robert Thompson",
+    "email": "robert.thompson@university.edu",
+    "major": "English Literature",
+    "year": "2",
+    "gpa": 3.67,
+    "phone": "(555) 678-9012",
+    "enrollmentDate": "2023-08-22"
+  },
+  {
+    "Id": 7,
+    "name": "Amanda Davis",
+    "email": "amanda.davis@university.edu",
+    "major": "Biology",
+    "year": "3",
+    "gpa": 3.78,
+    "phone": "(555) 789-0123",
+    "enrollmentDate": "2022-08-20"
+  },
+  {
+    "Id": 8,
+    "name": "James Wilson",
+    "email": "james.wilson@university.edu",
+    "major": "Economics",
+    "year": "4",
+    "gpa": 3.55,
+    "phone": "(555) 890-1234",
+    "enrollmentDate": "2021-08-16"
+  }
+]

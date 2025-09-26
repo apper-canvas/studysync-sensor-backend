@@ -9,12 +9,14 @@ const Layout = ({ children }) => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const location = useLocation();
 
-  const getPageTitle = () => {
+const getPageTitle = () => {
     switch (location.pathname) {
       case "/":
         return "Dashboard";
       case "/courses":
         return "Courses";
+      case "/students":
+        return "Students";
       case "/assignments":
         return "Assignments";
       case "/gpa":

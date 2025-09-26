@@ -76,9 +76,9 @@ const [formData, setFormData] = useState({
   };
 
 const filteredStudents = students.filter(student => {
-    const matchesSearch = student.name_c.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         student.email_c.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         student.major_c.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = (student.name_c?.toLowerCase() ?? '').includes(searchTerm.toLowerCase()) ||
+                         (student.email_c?.toLowerCase() ?? '').includes(searchTerm.toLowerCase()) ||
+                         (student.major_c?.toLowerCase() ?? '').includes(searchTerm.toLowerCase());
     const matchesYear = !selectedYear || student.year_c === selectedYear;
     const matchesMajor = !selectedMajor || student.major_c === selectedMajor;
     
@@ -120,19 +120,19 @@ const filteredStudents = students.filter(student => {
   const handleEdit = (student) => {
     setEditingStudent(student);
 setFormData({
-      name: student.name_c,
-      email: student.email_c,
-      major: student.major_c,
-      year: student.year_c,
-      gpa: student.gpa_c.toString(),
-      phone: student.phone_c,
-      chemistry_marks_c: student.chemistry_marks_c ? student.chemistry_marks_c.toString() : ''
+name: student.name_c ?? '',
+      email: student.email_c ?? '',
+      major: student.major_c ?? '',
+      year: student.year_c ?? '',
+      gpa: student.gpa_c?.toString() ?? '',
+      phone: student.phone_c ?? '',
+      chemistry_marks_c: student.chemistry_marks_c?.toString() ?? ''
     });
     setIsEditModalOpen(true);
   };
 
   const handleDelete = async (student) => {
-if (window.confirm(`Are you sure you want to delete ${student.name_c}?`)) {
+if (window.confirm(`Are you sure you want to delete ${student.name_c ?? 'this student'}?`)) {
       try {
         await studentsService.delete(student.Id);
         setStudents(prev => prev.filter(s => s.Id !== student.Id));
@@ -235,8 +235,8 @@ setFormData({
                       <ApperIcon name="User" size={20} className="text-blue-600" />
                     </div>
                     <div>
-<h3 className="font-semibold text-gray-900">{student.name_c}</h3>
-                      <p className="text-sm text-gray-600">{student.email_c}</p>
+<h3 className="font-semibold text-gray-900">{student.name_c ?? ''}</h3>
+                      <p className="text-sm text-gray-600">{student.email_c ?? ''}</p>
                     </div>
                   </div>
                   <div className="flex space-x-2">
@@ -261,26 +261,26 @@ setFormData({
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-600">Major:</span>
-                    <Badge variant="secondary">{student.major_c}</Badge>
+<Badge variant="secondary">{student.major_c ?? ''}</Badge>
                   </div>
                   
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-600">Year:</span>
                     <Badge variant="outline">
-                      {student.year_c === 'Graduate' ? 'Graduate' : `Year ${student.year_c}`}
+{student.year_c === 'Graduate' ? 'Graduate' : `Year ${student.year_c ?? ''}`}
                     </Badge>
                   </div>
                   
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-600">GPA:</span>
                     <Badge className={getGpaColor(student.gpa_c)}>
-                      {student.gpa_c.toFixed(2)}
+{student.gpa_c?.toFixed(2) ?? '0.00'}
                     </Badge>
                   </div>
                   
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-600">Phone:</span>
-                    <span className="text-sm font-medium">{student.phone_c}</span>
+<span className="text-sm font-medium">{student.phone_c ?? ''}</span>
                   </div>
                 </div>
               </Card>

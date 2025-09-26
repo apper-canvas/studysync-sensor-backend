@@ -1,9 +1,30 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSelector } from "react-redux";
 import Sidebar from "@/components/organisms/Sidebar";
 import MobileSidebar from "@/components/organisms/MobileSidebar";
 import ApperIcon from "@/components/ApperIcon";
+import { AuthContext } from "../../App";
+
+const LogoutButton = () => {
+  const { logout } = useContext(AuthContext);
+  const { user } = useSelector((state) => state.user);
+  
+  return (
+    <div className="flex items-center space-x-2">
+      <div className="w-8 h-8 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center">
+        <ApperIcon name="User" size={18} className="text-white" />
+      </div>
+      <button
+        onClick={logout}
+        className="text-sm text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+      >
+        Logout
+      </button>
+    </div>
+  );
+};
 
 const Layout = ({ children }) => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
@@ -47,14 +68,12 @@ const getPageTitle = () => {
                 <p className="text-sm text-slate-600 mt-1">
                   Welcome back to your academic dashboard
                 </p>
-              </div>
+</div>
               <div className="flex items-center space-x-4">
                 <button className="p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors">
                   <ApperIcon name="Bell" size={20} />
                 </button>
-                <div className="w-8 h-8 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center">
-                  <ApperIcon name="User" size={18} className="text-white" />
-                </div>
+                <LogoutButton />
               </div>
             </div>
           </header>
@@ -92,13 +111,11 @@ const getPageTitle = () => {
               {getPageTitle()}
             </h1>
             
-            <div className="flex items-center space-x-2">
+<div className="flex items-center space-x-2">
               <button className="p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors">
                 <ApperIcon name="Bell" size={20} />
               </button>
-              <div className="w-8 h-8 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center">
-                <ApperIcon name="User" size={16} className="text-white" />
-              </div>
+              <LogoutButton />
             </div>
           </div>
         </header>

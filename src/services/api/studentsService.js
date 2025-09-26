@@ -1,164 +1,426 @@
-import studentsData from '../mockData/students.json';
-
-// Mock database simulation with localStorage persistence
-const STORAGE_KEY = 'studysync_students';
+import { toast } from "react-toastify";
 
 class StudentsService {
   constructor() {
-    this.students = this.loadFromStorage();
+    this.tableName = 'student_c';
   }
 
-  loadFromStorage() {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? JSON.parse(stored) : [...studentsData];
-    } catch (error) {
-      console.warn('Failed to load students from storage:', error);
-      return [...studentsData];
-    }
-  }
-
-  saveToStorage() {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.students));
-    } catch (error) {
-      console.warn('Failed to save students to storage:', error);
-    }
-  }
-
-  // Simulate network delay
-  async delay(ms = 300) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+  getApperClient() {
+    const { ApperClient } = window.ApperSDK;
+    return new ApperClient({
+      apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+      apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+    });
   }
 
   async getAll() {
-    await this.delay();
-    return [...this.students];
+    try {
+      const params = {
+        fields: [
+          {"field": {"Name": "Id"}},
+          {"field": {"Name": "name_c"}},
+          {"field": {"Name": "email_c"}},
+          {"field": {"Name": "major_c"}},
+          {"field": {"Name": "year_c"}},
+          {"field": {"Name": "gpa_c"}},
+          {"field": {"Name": "phone_c"}},
+          {"field": {"Name": "enrollment_date_c"}}
+        ]
+      };
+      
+      const apperClient = this.getApperClient();
+      const response = await apperClient.fetchRecords(this.tableName, params);
+      
+      if (!response?.data?.length) {
+        return [];
+      }
+      
+      return response.data.map(student => ({
+        Id: student.Id,
+        name: student.name_c || '',
+        email: student.email_c || '',
+        major: student.major_c || '',
+        year: student.year_c || '',
+        gpa: student.gpa_c || 0.0,
+        phone: student.phone_c || '',
+        enrollmentDate: student.enrollment_date_c || ''
+      }));
+    } catch (error) {
+      console.error("Error fetching students:", error?.response?.data?.message || error);
+      throw error;
+    }
   }
 
   async getById(id) {
-    await this.delay();
-    const student = this.students.find(s => s.Id === parseInt(id));
-    if (!student) {
-      throw new Error(`Student with ID ${id} not found`);
+    try {
+      const params = {
+        fields: [
+          {"field": {"Name": "Id"}},
+          {"field": {"Name": "name_c"}},
+          {"field": {"Name": "email_c"}},
+          {"field": {"Name": "major_c"}},
+          {"field": {"Name": "year_c"}},
+          {"field": {"Name": "gpa_c"}},
+          {"field": {"Name": "phone_c"}},
+          {"field": {"Name": "enrollment_date_c"}}
+        ]
+      };
+      
+      const apperClient = this.getApperClient();
+      const response = await apperClient.getRecordById(this.tableName, id, params);
+      
+      if (!response?.data) {
+        throw new Error(`Student with ID ${id} not found`);
+      }
+      
+      const student = response.data;
+      return {
+        Id: student.Id,
+        name: student.name_c || '',
+        email: student.email_c || '',
+        major: student.major_c || '',
+        year: student.year_c || '',
+        gpa: student.gpa_c || 0.0,
+        phone: student.phone_c || '',
+        enrollmentDate: student.enrollment_date_c || ''
+      };
+    } catch (error) {
+      console.error(`Error fetching student ${id}:`, error?.response?.data?.message || error);
+      throw error;
     }
-    return { ...student };
   }
 
   async create(studentData) {
-    await this.delay();
-    
-    // Generate new ID
-    const maxId = this.students.reduce((max, student) => 
-      Math.max(max, student.Id), 0);
-    
-    const newStudent = {
-      Id: maxId + 1,
-      name: studentData.name,
-      email: studentData.email,
-      major: studentData.major,
-      year: studentData.year,
-      gpa: parseFloat(studentData.gpa) || 0.0,
-      phone: studentData.phone || '',
-      enrollmentDate: new Date().toISOString().split('T')[0]
-    };
-    
-    this.students.push(newStudent);
-    this.saveToStorage();
-    
-    return { ...newStudent };
+    try {
+      const params = {
+        records: [{
+          name_c: studentData.name || '',
+          email_c: studentData.email || '',
+          major_c: studentData.major || '',
+          year_c: studentData.year || '',
+          gpa_c: parseFloat(studentData.gpa) || 0.0,
+          phone_c: studentData.phone || '',
+          enrollment_date_c: new Date().toISOString().split('T')[0]
+        }]
+      };
+      
+      const apperClient = this.getApperClient();
+      const response = await apperClient.createRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        throw new Error(response.message);
+      }
+      
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+        
+        if (failed.length > 0) {
+          console.error(`Failed to create ${failed.length} students:`, failed);
+          failed.forEach(record => {
+            record.errors?.forEach(error => toast.error(`${error.fieldLabel}: ${error}`));
+            if (record.message) toast.error(record.message);
+          });
+        }
+        
+        if (successful.length > 0) {
+          const created = successful[0].data;
+          return {
+            Id: created.Id,
+            name: created.name_c || '',
+            email: created.email_c || '',
+            major: created.major_c || '',
+            year: created.year_c || '',
+            gpa: created.gpa_c || 0.0,
+            phone: created.phone_c || '',
+            enrollmentDate: created.enrollment_date_c || ''
+          };
+        }
+      }
+      
+      throw new Error("Failed to create student");
+    } catch (error) {
+      console.error("Error creating student:", error?.response?.data?.message || error);
+      throw error;
+    }
   }
 
   async update(id, updateData) {
-    await this.delay();
-    
-    const index = this.students.findIndex(s => s.Id === parseInt(id));
-    if (index === -1) {
-      throw new Error(`Student with ID ${id} not found`);
+    try {
+      const params = {
+        records: [{
+          Id: id,
+          name_c: updateData.name || '',
+          email_c: updateData.email || '',
+          major_c: updateData.major || '',
+          year_c: updateData.year || '',
+          gpa_c: parseFloat(updateData.gpa) || 0.0,
+          phone_c: updateData.phone || ''
+        }]
+      };
+      
+      const apperClient = this.getApperClient();
+      const response = await apperClient.updateRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        throw new Error(response.message);
+      }
+      
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+        
+        if (failed.length > 0) {
+          console.error(`Failed to update ${failed.length} students:`, failed);
+          failed.forEach(record => {
+            record.errors?.forEach(error => toast.error(`${error.fieldLabel}: ${error}`));
+            if (record.message) toast.error(record.message);
+          });
+        }
+        
+        if (successful.length > 0) {
+          const updated = successful[0].data;
+          return {
+            Id: updated.Id,
+            name: updated.name_c || '',
+            email: updated.email_c || '',
+            major: updated.major_c || '',
+            year: updated.year_c || '',
+            gpa: updated.gpa_c || 0.0,
+            phone: updated.phone_c || '',
+            enrollmentDate: updated.enrollment_date_c || ''
+          };
+        }
+      }
+      
+      throw new Error("Failed to update student");
+    } catch (error) {
+      console.error("Error updating student:", error?.response?.data?.message || error);
+      throw error;
     }
-    
-    const updatedStudent = {
-      ...this.students[index],
-      name: updateData.name,
-      email: updateData.email,
-      major: updateData.major,
-      year: updateData.year,
-      gpa: parseFloat(updateData.gpa) || this.students[index].gpa,
-      phone: updateData.phone || this.students[index].phone
-    };
-    
-    this.students[index] = updatedStudent;
-    this.saveToStorage();
-    
-    return { ...updatedStudent };
   }
 
   async delete(id) {
-    await this.delay();
-    
-    const index = this.students.findIndex(s => s.Id === parseInt(id));
-    if (index === -1) {
-      throw new Error(`Student with ID ${id} not found`);
+    try {
+      const params = { 
+        RecordIds: [id]
+      };
+      
+      const apperClient = this.getApperClient();
+      const response = await apperClient.deleteRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        throw new Error(response.message);
+      }
+      
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+        
+        if (failed.length > 0) {
+          console.error(`Failed to delete ${failed.length} students:`, failed);
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message);
+          });
+        }
+        
+        if (successful.length > 0) {
+          const deleted = successful[0].data;
+          return {
+            Id: deleted.Id,
+            name: deleted.name_c || '',
+            email: deleted.email_c || '',
+            major: deleted.major_c || '',
+            year: deleted.year_c || '',
+            gpa: deleted.gpa_c || 0.0,
+            phone: deleted.phone_c || '',
+            enrollmentDate: deleted.enrollment_date_c || ''
+          };
+        }
+      }
+      
+      return true;
+    } catch (error) {
+      console.error("Error deleting student:", error?.response?.data?.message || error);
+      throw error;
     }
-    
-    const deletedStudent = this.students.splice(index, 1)[0];
-    this.saveToStorage();
-    
-    return { ...deletedStudent };
   }
 
   // Additional utility methods
   async getByMajor(major) {
-    await this.delay();
-    return this.students.filter(s => 
-      s.major.toLowerCase().includes(major.toLowerCase())
-    );
+    try {
+      const params = {
+        fields: [
+          {"field": {"Name": "Id"}},
+          {"field": {"Name": "name_c"}},
+          {"field": {"Name": "email_c"}},
+          {"field": {"Name": "major_c"}},
+          {"field": {"Name": "year_c"}},
+          {"field": {"Name": "gpa_c"}},
+          {"field": {"Name": "phone_c"}},
+          {"field": {"Name": "enrollment_date_c"}}
+        ],
+        where: [{"FieldName": "major_c", "Operator": "Contains", "Values": [major]}]
+      };
+      
+      const apperClient = this.getApperClient();
+      const response = await apperClient.fetchRecords(this.tableName, params);
+      
+      if (!response?.data?.length) {
+        return [];
+      }
+      
+      return response.data.map(student => ({
+        Id: student.Id,
+        name: student.name_c || '',
+        email: student.email_c || '',
+        major: student.major_c || '',
+        year: student.year_c || '',
+        gpa: student.gpa_c || 0.0,
+        phone: student.phone_c || '',
+        enrollmentDate: student.enrollment_date_c || ''
+      }));
+    } catch (error) {
+      console.error("Error fetching students by major:", error?.response?.data?.message || error);
+      throw error;
+    }
   }
 
   async getByYear(year) {
-    await this.delay();
-    return this.students.filter(s => s.year === year);
+    try {
+      const params = {
+        fields: [
+          {"field": {"Name": "Id"}},
+          {"field": {"Name": "name_c"}},
+          {"field": {"Name": "email_c"}},
+          {"field": {"Name": "major_c"}},
+          {"field": {"Name": "year_c"}},
+          {"field": {"Name": "gpa_c"}},
+          {"field": {"Name": "phone_c"}},
+          {"field": {"Name": "enrollment_date_c"}}
+        ],
+        where: [{"FieldName": "year_c", "Operator": "EqualTo", "Values": [year]}]
+      };
+      
+      const apperClient = this.getApperClient();
+      const response = await apperClient.fetchRecords(this.tableName, params);
+      
+      if (!response?.data?.length) {
+        return [];
+      }
+      
+      return response.data.map(student => ({
+        Id: student.Id,
+        name: student.name_c || '',
+        email: student.email_c || '',
+        major: student.major_c || '',
+        year: student.year_c || '',
+        gpa: student.gpa_c || 0.0,
+        phone: student.phone_c || '',
+        enrollmentDate: student.enrollment_date_c || ''
+      }));
+    } catch (error) {
+      console.error("Error fetching students by year:", error?.response?.data?.message || error);
+      throw error;
+    }
   }
 
   async search(query) {
-    await this.delay();
-    const searchTerm = query.toLowerCase();
-    return this.students.filter(s =>
-      s.name.toLowerCase().includes(searchTerm) ||
-      s.email.toLowerCase().includes(searchTerm) ||
-      s.major.toLowerCase().includes(searchTerm)
-    );
+    try {
+      const params = {
+        fields: [
+          {"field": {"Name": "Id"}},
+          {"field": {"Name": "name_c"}},
+          {"field": {"Name": "email_c"}},
+          {"field": {"Name": "major_c"}},
+          {"field": {"Name": "year_c"}},
+          {"field": {"Name": "gpa_c"}},
+          {"field": {"Name": "phone_c"}},
+          {"field": {"Name": "enrollment_date_c"}}
+        ],
+        whereGroups: [{
+          operator: "OR",
+          subGroups: [
+            {
+              conditions: [{"fieldName": "name_c", "operator": "Contains", "values": [query]}],
+              operator: ""
+            },
+            {
+              conditions: [{"fieldName": "email_c", "operator": "Contains", "values": [query]}],
+              operator: ""
+            },
+            {
+              conditions: [{"fieldName": "major_c", "operator": "Contains", "values": [query]}],
+              operator: ""
+            }
+          ]
+        }]
+      };
+      
+      const apperClient = this.getApperClient();
+      const response = await apperClient.fetchRecords(this.tableName, params);
+      
+      if (!response?.data?.length) {
+        return [];
+      }
+      
+      return response.data.map(student => ({
+        Id: student.Id,
+        name: student.name_c || '',
+        email: student.email_c || '',
+        major: student.major_c || '',
+        year: student.year_c || '',
+        gpa: student.gpa_c || 0.0,
+        phone: student.phone_c || '',
+        enrollmentDate: student.enrollment_date_c || ''
+      }));
+    } catch (error) {
+      console.error("Error searching students:", error?.response?.data?.message || error);
+      throw error;
+    }
   }
 
   async getStats() {
-    await this.delay();
-    const stats = {
-      total: this.students.length,
-      byMajor: {},
-      byYear: {},
-      averageGpa: 0
-    };
-
-    let totalGpa = 0;
-    let gpaCount = 0;
-
-    this.students.forEach(student => {
-      // Count by major
-      stats.byMajor[student.major] = (stats.byMajor[student.major] || 0) + 1;
+    try {
+      const students = await this.getAll();
       
-      // Count by year
-      stats.byYear[student.year] = (stats.byYear[student.year] || 0) + 1;
-      
-      // Calculate average GPA
-      if (student.gpa > 0) {
-        totalGpa += student.gpa;
-        gpaCount++;
-      }
-    });
+      const stats = {
+        total: students.length,
+        byMajor: {},
+        byYear: {},
+        averageGpa: 0
+      };
 
-    stats.averageGpa = gpaCount > 0 ? totalGpa / gpaCount : 0;
+      let totalGpa = 0;
+      let gpaCount = 0;
 
-    return stats;
+      students.forEach(student => {
+        // Count by major
+        stats.byMajor[student.major] = (stats.byMajor[student.major] || 0) + 1;
+        
+        // Count by year
+        stats.byYear[student.year] = (stats.byYear[student.year] || 0) + 1;
+        
+        // Calculate average GPA
+        if (student.gpa > 0) {
+          totalGpa += student.gpa;
+          gpaCount++;
+        }
+      });
+
+      stats.averageGpa = gpaCount > 0 ? totalGpa / gpaCount : 0;
+
+      return stats;
+    } catch (error) {
+      console.error("Error calculating student stats:", error?.response?.data?.message || error);
+      throw error;
+    }
   }
 }
 

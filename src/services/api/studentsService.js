@@ -92,17 +92,20 @@ class StudentsService {
 
   async create(studentData) {
     try {
-const params = {
-        records: [{
-          name_c: studentData.name || '',
-          email_c: studentData.email || '',
-          major_c: studentData.major || '',
-          year_c: studentData.year || '',
-          gpa_c: parseFloat(studentData.gpa) || 0.0,
-          phone_c: studentData.phone || '',
-          chemistry_marks_c: parseFloat(studentData.chemistry_marks_c) || 0.0,
-          enrollment_date_c: new Date().toISOString().split('T')[0]
-        }]
+// Sanitize data to prevent circular reference errors
+      const sanitizedData = {
+        name_c: String(studentData.name || '').trim(),
+        email_c: String(studentData.email || '').trim(),
+        major_c: String(studentData.major || '').trim(),
+        year_c: String(studentData.year || '').trim(),
+        gpa_c: parseFloat(String(studentData.gpa || '0')) || 0.0,
+        phone_c: String(studentData.phone || '').trim(),
+        chemistry_marks_c: parseFloat(String(studentData.chemistry_marks_c || '0')) || 0.0,
+        enrollment_date_c: new Date().toISOString().split('T')[0]
+      };
+
+      const params = {
+        records: [sanitizedData]
       };
       
       const apperClient = this.getApperClient();
@@ -150,17 +153,20 @@ const params = {
 
   async update(id, updateData) {
     try {
-const params = {
-        records: [{
-          Id: id,
-          name_c: updateData.name || '',
-          email_c: updateData.email || '',
-          major_c: updateData.major || '',
-          year_c: updateData.year || '',
-          gpa_c: parseFloat(updateData.gpa) || 0.0,
-          phone_c: updateData.phone || '',
-          chemistry_marks_c: parseFloat(updateData.chemistry_marks_c) || 0.0
-        }]
+// Sanitize data to prevent circular reference errors
+      const sanitizedData = {
+        Id: parseInt(id),
+        name_c: String(updateData.name || '').trim(),
+        email_c: String(updateData.email || '').trim(),
+        major_c: String(updateData.major || '').trim(),
+        year_c: String(updateData.year || '').trim(),
+        gpa_c: parseFloat(String(updateData.gpa || '0')) || 0.0,
+        phone_c: String(updateData.phone || '').trim(),
+        chemistry_marks_c: parseFloat(String(updateData.chemistry_marks_c || '0')) || 0.0
+      };
+
+      const params = {
+        records: [sanitizedData]
       };
       
       const apperClient = this.getApperClient();

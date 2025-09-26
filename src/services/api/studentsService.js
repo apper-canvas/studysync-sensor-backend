@@ -92,7 +92,7 @@ class StudentsService {
 
   async create(studentData) {
     try {
-      const params = {
+const params = {
         records: [{
           name_c: studentData.name || '',
           email_c: studentData.email || '',
@@ -100,6 +100,7 @@ class StudentsService {
           year_c: studentData.year || '',
           gpa_c: parseFloat(studentData.gpa) || 0.0,
           phone_c: studentData.phone || '',
+          chemistry_marks_c: parseFloat(studentData.chemistry_marks_c) || 0.0,
           enrollment_date_c: new Date().toISOString().split('T')[0]
         }]
       };
@@ -149,7 +150,7 @@ class StudentsService {
 
   async update(id, updateData) {
     try {
-      const params = {
+const params = {
         records: [{
           Id: id,
           name_c: updateData.name || '',
@@ -157,7 +158,8 @@ class StudentsService {
           major_c: updateData.major || '',
           year_c: updateData.year || '',
           gpa_c: parseFloat(updateData.gpa) || 0.0,
-          phone_c: updateData.phone || ''
+          phone_c: updateData.phone || '',
+          chemistry_marks_c: parseFloat(updateData.chemistry_marks_c) || 0.0
         }]
       };
       

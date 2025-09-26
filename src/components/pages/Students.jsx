@@ -317,11 +317,11 @@ setFormData({
             />
           </FormField>
 
-          <FormField label="Major" required>
+<FormField label="Major" required>
             <Select
               name="major"
               value={formData.major}
-              onChange={(value) => setFormData(prev => ({ ...prev, major: value }))}
+              onChange={(value) => setFormData(prev => ({ ...prev, major: typeof value === 'string' ? value : value?.value || '' }))}
               options={majorOptions.slice(1)}
               placeholder="Select major"
               required
@@ -329,11 +329,11 @@ setFormData({
           </FormField>
 
           <div className="grid grid-cols-2 gap-4">
-            <FormField label="Academic Year" required>
+<FormField label="Academic Year" required>
               <Select
                 name="year"
                 value={formData.year}
-                onChange={(value) => setFormData(prev => ({ ...prev, year: value }))}
+                onChange={(value) => setFormData(prev => ({ ...prev, year: typeof value === 'string' ? value : value?.value || '' }))}
                 options={yearOptions.slice(1)}
                 placeholder="Select year"
                 required
@@ -416,11 +416,11 @@ setFormData({
             />
           </FormField>
 
-          <FormField label="Major" required>
+<FormField label="Major" required>
             <Select
               name="major"
               value={formData.major}
-              onChange={(value) => setFormData(prev => ({ ...prev, major: value }))}
+              onChange={(value) => setFormData(prev => ({ ...prev, major: typeof value === 'string' ? value : value?.value || '' }))}
               options={majorOptions.slice(1)}
               placeholder="Select major"
               required
@@ -428,11 +428,11 @@ setFormData({
           </FormField>
 
           <div className="grid grid-cols-2 gap-4">
-            <FormField label="Academic Year" required>
+<FormField label="Academic Year" required>
               <Select
                 name="year"
                 value={formData.year}
-                onChange={(value) => setFormData(prev => ({ ...prev, year: value }))}
+                onChange={(value) => setFormData(prev => ({ ...prev, year: typeof value === 'string' ? value : value?.value || '' }))}
                 options={yearOptions.slice(1)}
                 placeholder="Select year"
                 required

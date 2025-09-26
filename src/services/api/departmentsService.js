@@ -141,27 +141,28 @@ class DepartmentsService {
     }
   }
 
-  async update(id, departmentData) {
+async update(id, departmentData) {
     try {
       const client = this.getApperClient();
       
-      // Only include Updateable fields
+      // Only include Updateable fields with valid values
       const updateData = {
         Id: id
       };
 
-      if (departmentData.name_c !== undefined && departmentData.name_c !== '') {
-        updateData.name_c = departmentData.name_c;
-        updateData.Name = departmentData.name_c; // Keep Name in sync
+      // Only include fields that have actual values (not undefined, null, or empty strings)
+      if (departmentData.name_c && departmentData.name_c.trim()) {
+        updateData.name_c = departmentData.name_c.trim();
+        updateData.Name = departmentData.name_c.trim(); // Keep Name in sync
       }
-      if (departmentData.description_c !== undefined && departmentData.description_c !== '') {
-        updateData.description_c = departmentData.description_c;
+      if (departmentData.description_c && departmentData.description_c.trim()) {
+        updateData.description_c = departmentData.description_c.trim();
       }
-      if (departmentData.head_of_department_c !== undefined && departmentData.head_of_department_c !== '') {
-        updateData.head_of_department_c = departmentData.head_of_department_c;
+      if (departmentData.head_of_department_c && departmentData.head_of_department_c.trim()) {
+        updateData.head_of_department_c = departmentData.head_of_department_c.trim();
       }
-      if (departmentData.Tags !== undefined && departmentData.Tags !== '') {
-        updateData.Tags = departmentData.Tags;
+      if (departmentData.Tags && departmentData.Tags.trim()) {
+        updateData.Tags = departmentData.Tags.trim();
       }
 
       const payload = {

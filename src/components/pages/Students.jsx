@@ -321,7 +321,7 @@ setFormData({
             <Select
               name="major"
               value={formData.major}
-              onChange={(value) => setFormData(prev => ({ ...prev, major: value }))}
+              onChange={(e) => setFormData(prev => ({ ...prev, major: e.target.value }))}
               options={majorOptions.slice(1)}
               placeholder="Select major"
               required
@@ -333,7 +333,7 @@ setFormData({
               <Select
                 name="year"
                 value={formData.year}
-                onChange={(value) => setFormData(prev => ({ ...prev, year: value }))}
+                onChange={(e) => setFormData(prev => ({ ...prev, year: e.target.value }))}
                 options={yearOptions.slice(1)}
                 placeholder="Select year"
                 required
@@ -420,7 +420,7 @@ setFormData({
             <Select
               name="major"
               value={formData.major}
-              onChange={(value) => setFormData(prev => ({ ...prev, major: value }))}
+              onChange={(e) => setFormData(prev => ({ ...prev, major: e.target.value }))}
               options={majorOptions.slice(1)}
               placeholder="Select major"
               required
@@ -432,7 +432,7 @@ setFormData({
               <Select
                 name="year"
                 value={formData.year}
-                onChange={(value) => setFormData(prev => ({ ...prev, year: value }))}
+                onChange={(e) => setFormData(prev => ({ ...prev, year: e.target.value }))}
                 options={yearOptions.slice(1)}
                 placeholder="Select year"
                 required

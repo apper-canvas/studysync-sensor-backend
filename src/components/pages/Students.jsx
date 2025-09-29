@@ -20,9 +20,11 @@ const Students = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+const [searchTerm, setSearchTerm] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedMajor, setSelectedMajor] = useState('');
+  const [availableYears, setAvailableYears] = useState([]);
+  const [availableMajors, setAvailableMajors] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState(null);
@@ -65,16 +67,23 @@ const gradeOptions = [
     { value: 'Economics', label: 'Economics' }
   ];
 
-  useEffect(() => {
+useEffect(() => {
     loadStudents();
   }, []);
 
-  const loadStudents = async () => {
+const loadStudents = async () => {
     try {
       setLoading(true);
       setError(null);
       const data = await studentsService.getAll();
       setStudents(data);
+      
+      // Extract unique years and majors for filter options
+      const years = [...new Set(data.map(student => student.year).filter(year => year))];
+      const majors = [...new Set(data.map(student => student.major).filter(major => major))];
+      
+      setAvailableYears(years.sort());
+      setAvailableMajors(majors.sort());
     } catch (err) {
       setError(err.message);
       toast.error('Failed to load students');
@@ -83,7 +92,37 @@ const gradeOptions = [
     }
   };
 
-const filteredStudents = students.filter(student => {
+// Filter handlers for FilterBar component
+  const handleFilterChange = (key, value) => {
+    if (key === 'year') {
+      setSelectedYear(value);
+    } else if (key === 'major') {
+      setSelectedMajor(value);
+    }
+  };
+
+  const handleClearFilters = () => {
+    setSelectedYear('');
+    setSelectedMajor('');
+  };
+
+  // Create filters array for FilterBar component
+  const filters = [
+    {
+      key: 'year',
+      value: selectedYear,
+      placeholder: 'Filter by Year',
+      options: availableYears.map(year => ({ value: year, label: year }))
+    },
+    {
+      key: 'major',
+      value: selectedMajor,
+      placeholder: 'Filter by Major',
+      options: availableMajors.map(major => ({ value: major, label: major }))
+    }
+  ];
+
+  const filteredStudents = students.filter(student => {
     const matchesSearch = (student.name?.toLowerCase() ?? '').includes(searchTerm.toLowerCase()) ||
                          (student.email?.toLowerCase() ?? '').includes(searchTerm.toLowerCase()) ||
                          (student.major?.toLowerCase() ?? '').includes(searchTerm.toLowerCase());
@@ -204,14 +243,13 @@ setFormData({
           className="md:col-span-1"
         />
 <Select
-          value={selectedYear}
-          onChange={(value) => setSelectedYear(value)}
+filters={filters}
+          onFilterChange={handleFilterChange}
+          onClearFilters={handleClearFilters}
           options={yearOptions}
           placeholder="Filter by Year"
         />
         <Select
-          value={selectedMajor}
-          onChange={(value) => setSelectedMajor(value)}
           options={majorOptions}
           placeholder="Filter by Major"
         />

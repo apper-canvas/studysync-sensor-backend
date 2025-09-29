@@ -33,7 +33,8 @@ const [formData, setFormData] = useState({
     year: '',
     gpa: '',
     phone: '',
-    chemistry_marks_c: ''
+    chemistry_marks_c: '',
+    grade: ''
   });
 
   const yearOptions = [
@@ -44,7 +45,14 @@ const [formData, setFormData] = useState({
     { value: '4', label: 'Fourth Year' },
     { value: 'Graduate', label: 'Graduate' }
   ];
-
+const gradeOptions = [
+    { value: '', label: 'Select Grade' },
+    { value: 'A', label: 'A' },
+    { value: 'B', label: 'B' },
+    { value: 'C', label: 'C' },
+    { value: 'D', label: 'D' },
+    { value: 'F', label: 'F' }
+  ];
   const majorOptions = [
     { value: '', label: 'All Majors' },
     { value: 'Computer Science', label: 'Computer Science' },
@@ -126,7 +134,8 @@ setFormData({
       year: student.year ?? '',
       gpa: student.gpa?.toString() ?? '',
       phone: student.phone ?? '',
-      chemistry_marks_c: student.chemistry_marks_c?.toString() ?? ''
+      chemistry_marks_c: student.chemistry_marks_c?.toString() ?? '',
+      grade: student.grade ?? ''
     });
     setIsEditModalOpen(true);
   };
@@ -151,7 +160,8 @@ setFormData({
       year: '',
       gpa: '',
       phone: '',
-      chemistry_marks_c: ''
+      chemistry_marks_c: '',
+      grade: ''
     });
     setEditingStudent(null);
   };
@@ -372,6 +382,16 @@ setFormData({
               onChange={handleInputChange}
               placeholder="Enter chemistry marks"
             />
+</FormField>
+
+          <FormField label="Grade">
+            <Select
+              name="grade"
+              value={formData.grade}
+              onChange={(e) => setFormData(prev => ({ ...prev, grade: e.target.value }))}
+              options={gradeOptions}
+              placeholder="Select grade"
+            />
           </FormField>
 
           <div className="flex justify-end space-x-3 pt-4">
@@ -470,6 +490,16 @@ setFormData({
               value={formData.chemistry_marks_c}
               onChange={handleInputChange}
               placeholder="Enter chemistry marks"
+            />
+</FormField>
+
+          <FormField label="Grade">
+            <Select
+              name="grade"
+              value={formData.grade}
+              onChange={(e) => setFormData(prev => ({ ...prev, grade: e.target.value }))}
+              options={gradeOptions}
+              placeholder="Select grade"
             />
           </FormField>
 

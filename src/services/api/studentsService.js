@@ -25,7 +25,8 @@ fields: [
           {"field": {"Name": "gpa_c"}},
           {"field": {"Name": "phone_c"}},
           {"field": {"Name": "enrollment_date_c"}},
-          {"field": {"Name": "chemistry_marks_c"}}
+          {"field": {"Name": "chemistry_marks_c"}},
+          {"field": {"Name": "grade_c"}}
         ]
       };
       
@@ -42,10 +43,11 @@ fields: [
         email: student.email_c || '',
         major: student.major_c || '',
         year: student.year_c || '',
-        gpa: student.gpa_c || 0.0,
-phone: student.phone_c || '',
+gpa: student.gpa_c || 0.0,
+        phone: student.phone_c || '',
         enrollmentDate: student.enrollment_date_c || '',
-        chemistry_marks_c: student.chemistry_marks_c || 0.0
+        chemistry_marks_c: student.chemistry_marks_c || 0.0,
+        grade: student.grade_c || ''
       }));
     } catch (error) {
       console.error("Error fetching students:", error?.response?.data?.message || error);
@@ -65,7 +67,8 @@ phone: student.phone_c || '',
           {"field": {"Name": "gpa_c"}},
           {"field": {"Name": "phone_c"}},
           {"field": {"Name": "enrollment_date_c"}},
-          {"field": {"Name": "chemistry_marks_c"}}
+          {"field": {"Name": "chemistry_marks_c"}},
+          {"field": {"Name": "grade_c"}}
         ]
       };
       
@@ -81,12 +84,13 @@ phone: student.phone_c || '',
         Id: student.Id,
         name: student.name_c || '',
         email: student.email_c || '',
-        major: student.major_c || '',
-year: student.year_c || '',
+major: student.major_c || '',
+        year: student.year_c || '',
         gpa: student.gpa_c || 0.0,
         phone: student.phone_c || '',
         enrollmentDate: student.enrollment_date_c || '',
-        chemistry_marks_c: student.chemistry_marks_c || 0.0
+        chemistry_marks_c: student.chemistry_marks_c || 0.0,
+        grade: student.grade_c || ''
       };
     } catch (error) {
       console.error(`Error fetching student ${id}:`, error?.response?.data?.message || error);
@@ -103,8 +107,9 @@ year: student.year_c || '',
         major_c: String(studentData.major || '').trim(),
         year_c: String(studentData.year || '').trim(),
         gpa_c: parseFloat(String(studentData.gpa || '0')) || 0.0,
-        phone_c: String(studentData.phone || '').trim(),
+phone_c: String(studentData.phone || '').trim(),
         chemistry_marks_c: parseFloat(String(studentData.chemistry_marks_c || '0')) || 0.0,
+        grade_c: String(studentData.grade || '').trim(),
         enrollment_date_c: new Date().toISOString().split('T')[0]
       };
 
@@ -141,10 +146,11 @@ const studentResult = {
             email: created.email_c || '',
             major: created.major_c || '',
             year: created.year_c || '',
-            gpa: created.gpa_c || 0.0,
+gpa: created.gpa_c || 0.0,
             phone: created.phone_c || '',
             enrollmentDate: created.enrollment_date_c || '',
-            chemistry_marks_c: created.chemistry_marks_c || 0.0
+            chemistry_marks_c: created.chemistry_marks_c || 0.0,
+            grade: created.grade_c || ''
           };
 
           // Check if Chemistry marks are greater than 5.0 and send email
@@ -199,9 +205,10 @@ const studentResult = {
         email_c: String(updateData.email || '').trim(),
         major_c: String(updateData.major || '').trim(),
         year_c: String(updateData.year || '').trim(),
-        gpa_c: parseFloat(String(updateData.gpa || '0')) || 0.0,
+gpa_c: parseFloat(String(updateData.gpa || '0')) || 0.0,
         phone_c: String(updateData.phone || '').trim(),
-        chemistry_marks_c: parseFloat(String(updateData.chemistry_marks_c || '0')) || 0.0
+        chemistry_marks_c: parseFloat(String(updateData.chemistry_marks_c || '0')) || 0.0,
+        grade_c: String(updateData.grade || '').trim()
       };
 
       const params = {
@@ -235,11 +242,12 @@ const studentResult = {
 Id: updated.Id,
             name: updated.name_c || '',
             email: updated.email_c || '',
-            major: updated.major_c || '',
+major: updated.major_c || '',
             year: updated.year_c || '',
             gpa: updated.gpa_c || 0.0,
             phone: updated.phone_c || '',
             enrollmentDate: updated.enrollment_date_c || '',
+            grade: updated.grade_c || '',
             chemistry_marks_c: updated.chemistry_marks_c || 0.0
           };
         }
@@ -281,11 +289,12 @@ Id: updated.Id,
         if (successful.length > 0) {
           const deleted = successful[0].data;
 return {
-            Id: deleted.Id,
+Id: deleted.Id,
             name: deleted.name_c || '',
             email: deleted.email_c || '',
             major: deleted.major_c || '',
             year: deleted.year_c || '',
+            grade: deleted.grade_c || '',
             gpa: deleted.gpa_c || 0.0,
             phone: deleted.phone_c || '',
             enrollmentDate: deleted.enrollment_date_c || '',
@@ -314,7 +323,8 @@ fields: [
           {"field": {"Name": "gpa_c"}},
           {"field": {"Name": "phone_c"}},
           {"field": {"Name": "enrollment_date_c"}},
-          {"field": {"Name": "chemistry_marks_c"}}
+          {"field": {"Name": "chemistry_marks_c"}},
+          {"field": {"Name": "grade_c"}}
         ],
         where: [{"FieldName": "major_c", "Operator": "Contains", "Values": [major]}]
       };
@@ -333,6 +343,7 @@ Id: student.Id,
         major: student.major_c || '',
         year: student.year_c || '',
         gpa: student.gpa_c || 0.0,
+        grade: student.grade_c || '',
         phone: student.phone_c || '',
         enrollmentDate: student.enrollment_date_c || '',
         chemistry_marks_c: student.chemistry_marks_c || 0.0
@@ -355,7 +366,8 @@ fields: [
           {"field": {"Name": "gpa_c"}},
           {"field": {"Name": "phone_c"}},
           {"field": {"Name": "enrollment_date_c"}},
-          {"field": {"Name": "chemistry_marks_c"}}
+          {"field": {"Name": "chemistry_marks_c"}},
+          {"field": {"Name": "grade_c"}}
         ],
         where: [{"FieldName": "year_c", "Operator": "EqualTo", "Values": [year]}]
       };
@@ -374,6 +386,7 @@ Id: student.Id,
         major: student.major_c || '',
         year: student.year_c || '',
         gpa: student.gpa_c || 0.0,
+        grade: student.grade_c || '',
         phone: student.phone_c || '',
         enrollmentDate: student.enrollment_date_c || '',
         chemistry_marks_c: student.chemistry_marks_c || 0.0
@@ -396,7 +409,8 @@ fields: [
           {"field": {"Name": "gpa_c"}},
           {"field": {"Name": "phone_c"}},
           {"field": {"Name": "enrollment_date_c"}},
-          {"field": {"Name": "chemistry_marks_c"}}
+          {"field": {"Name": "chemistry_marks_c"}},
+          {"field": {"Name": "grade_c"}}
         ],
         whereGroups: [{
           operator: "OR",
@@ -433,7 +447,8 @@ fields: [
 gpa: student.gpa_c || 0.0,
         phone: student.phone_c || '',
         enrollmentDate: student.enrollment_date_c || '',
-        chemistry_marks_c: student.chemistry_marks_c || 0.0
+        chemistry_marks_c: student.chemistry_marks_c || 0.0,
+        grade: student.grade_c || ''
       }));
     } catch (error) {
       console.error("Error searching students:", error?.response?.data?.message || error);

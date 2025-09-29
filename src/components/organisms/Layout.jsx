@@ -36,8 +36,10 @@ switch (location.pathname) {
         return "Dashboard";
       case "/courses":
         return "Courses";
-      case "/students":
+case "/students":
         return "Students";
+      case "/teachers":
+        return "Teachers";
       case "/departments":
         return "Departments";
       case "/assignments":

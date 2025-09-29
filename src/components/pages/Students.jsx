@@ -1,20 +1,19 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { toast } from 'react-toastify';
-import Button from '@/components/atoms/Button';
-import { Card } from '@/components/atoms/Card';
-import Modal from '@/components/atoms/Modal';
-import Input from '@/components/atoms/Input';
-import Select from '@/components/atoms/Select';
-import Badge from '@/components/atoms/Badge';
-import SearchBar from '@/components/molecules/SearchBar';
-import FilterBar from '@/components/molecules/FilterBar';
-import FormField from '@/components/molecules/FormField';
-import Loading from '@/components/ui/Loading';
-import Empty from '@/components/ui/Empty';
-import Error from '@/components/ui/Error';
-import ApperIcon from '@/components/ApperIcon';
-import { studentsService } from '@/services/api/studentsService';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { Card } from "@/components/atoms/Card";
+import { studentsService } from "@/services/api/studentsService";
+import ApperIcon from "@/components/ApperIcon";
+import Modal from "@/components/atoms/Modal";
+import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
+import Select from "@/components/atoms/Select";
+import Badge from "@/components/atoms/Badge";
+import SearchBar from "@/components/molecules/SearchBar";
+import FormField from "@/components/molecules/FormField";
+import Error from "@/components/ui/Error";
+import Empty from "@/components/ui/Empty";
+import Loading from "@/components/ui/Loading";
 
 const Students = () => {
   const [students, setStudents] = useState([]);
@@ -23,8 +22,6 @@ const Students = () => {
 const [searchTerm, setSearchTerm] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedMajor, setSelectedMajor] = useState('');
-  const [availableYears, setAvailableYears] = useState([]);
-  const [availableMajors, setAvailableMajors] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState(null);
@@ -78,12 +75,6 @@ const loadStudents = async () => {
       const data = await studentsService.getAll();
       setStudents(data);
       
-      // Extract unique years and majors for filter options
-      const years = [...new Set(data.map(student => student.year).filter(year => year))];
-      const majors = [...new Set(data.map(student => student.major).filter(major => major))];
-      
-      setAvailableYears(years.sort());
-      setAvailableMajors(majors.sort());
     } catch (err) {
       setError(err.message);
       toast.error('Failed to load students');
@@ -92,41 +83,13 @@ const loadStudents = async () => {
     }
   };
 
-// Filter handlers for FilterBar component
-  const handleFilterChange = (key, value) => {
-    if (key === 'year') {
-      setSelectedYear(value);
-    } else if (key === 'major') {
-      setSelectedMajor(value);
-    }
-  };
 
-  const handleClearFilters = () => {
-    setSelectedYear('');
-    setSelectedMajor('');
-  };
-
-  // Create filters array for FilterBar component
-  const filters = [
-    {
-      key: 'year',
-      value: selectedYear,
-      placeholder: 'Filter by Year',
-      options: availableYears.map(year => ({ value: year, label: year }))
-    },
-    {
-      key: 'major',
-      value: selectedMajor,
-      placeholder: 'Filter by Major',
-      options: availableMajors.map(major => ({ value: major, label: major }))
-    }
-  ];
-
-  const filteredStudents = students.filter(student => {
+const filteredStudents = students.filter(student => {
     const matchesSearch = (student.name?.toLowerCase() ?? '').includes(searchTerm.toLowerCase()) ||
                          (student.email?.toLowerCase() ?? '').includes(searchTerm.toLowerCase()) ||
                          (student.major?.toLowerCase() ?? '').includes(searchTerm.toLowerCase());
-    const matchesYear = !selectedYear || student.year === selectedYear;
+    
+    const matchesYear = !selectedYear || student.year?.toString() === selectedYear;
     const matchesMajor = !selectedMajor || student.major === selectedMajor;
     
     return matchesSearch && matchesYear && matchesMajor;
@@ -180,7 +143,7 @@ setFormData({
   };
 
   const handleDelete = async (student) => {
-if (window.confirm(`Are you sure you want to delete ${student.name_c ?? 'this student'}?`)) {
+if (window.confirm(`Are you sure you want to delete ${student.name ?? 'this student'}?`)) {
       try {
         await studentsService.delete(student.Id);
         setStudents(prev => prev.filter(s => s.Id !== student.Id));
@@ -234,7 +197,7 @@ setFormData({
         </Button>
       </div>
 
-      {/* Search and Filters */}
+{/* Search and Filters */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <SearchBar
           value={searchTerm}
@@ -242,10 +205,17 @@ setFormData({
           placeholder="Search students..."
           className="md:col-span-1"
         />
-<FilterBar
-          filters={filters}
-          onFilterChange={handleFilterChange}
-          onClearFilters={handleClearFilters}
+        <Select
+          value={selectedYear}
+          onChange={(e) => setSelectedYear(e.target.value)}
+          options={yearOptions}
+          placeholder="Filter by year"
+        />
+        <Select
+          value={selectedMajor}
+          onChange={(e) => setSelectedMajor(e.target.value)}
+          options={majorOptions}
+          placeholder="Filter by major"
         />
       </div>
 

@@ -3,7 +3,7 @@ import { cn } from "@/utils/cn";
 import ApperIcon from "@/components/ApperIcon";
 
 const Select = forwardRef(
-({ className, children, error, options, placeholder, ...props }, ref) => {
+({ className, children, error, options, placeholder, filters, onFilterChange, onClearFilters, ...props }, ref) => {
     return (
       <div className="relative">
         <select
@@ -16,7 +16,7 @@ const Select = forwardRef(
             className
           )}
           ref={ref}
-          {...props}
+{...props}
         >
           {placeholder && (
             <option value="" disabled>

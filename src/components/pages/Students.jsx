@@ -242,16 +242,10 @@ setFormData({
           placeholder="Search students..."
           className="md:col-span-1"
         />
-<Select
-filters={filters}
+<FilterBar
+          filters={filters}
           onFilterChange={handleFilterChange}
           onClearFilters={handleClearFilters}
-          options={yearOptions}
-          placeholder="Filter by Year"
-        />
-        <Select
-          options={majorOptions}
-          placeholder="Filter by Major"
         />
       </div>
 

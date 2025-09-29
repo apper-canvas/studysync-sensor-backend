@@ -22,7 +22,8 @@ const Teachers = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingTeacher, setEditingTeacher] = useState(null);
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
+    id: '',
     name: '',
     email: '',
     phone: '',
@@ -90,8 +91,9 @@ const filteredTeachers = teachers.filter(teacher => {
   };
 
 const handleEdit = (teacher) => {
-    setEditingTeacher(teacher);
+setEditingTeacher(teacher);
     setFormData({
+      id: teacher.Id ?? '',
       name: teacher.name_c ?? '',
       email: teacher.email_c ?? '',
       phone: teacher.phone_c ?? '',
@@ -273,6 +275,15 @@ const handleDelete = async (teacher) => {
               placeholder="Enter department"
             />
           </FormField>
+<FormField label="Teacher ID">
+            <Input
+              name="id"
+              value={formData.id}
+              disabled
+              placeholder="Auto-generated"
+              className="bg-gray-50"
+            />
+          </FormField>
 
           <FormField label="Employee ID">
             <Input
@@ -344,6 +355,15 @@ const handleDelete = async (teacher) => {
             />
           </FormField>
 
+<FormField label="Teacher ID">
+            <Input
+              name="id"
+              value={formData.id}
+              disabled
+              className="bg-gray-50"
+            />
+          </FormField>
+
           <FormField label="Employee ID">
             <Input
               name="employeeId"
@@ -352,7 +372,6 @@ const handleDelete = async (teacher) => {
               placeholder="Enter employee ID"
             />
           </FormField>
-
           <div className="flex justify-end space-x-3 pt-4">
             <Button
               type="button"

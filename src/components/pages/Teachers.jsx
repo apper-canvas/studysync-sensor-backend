@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { toast } from 'react-toastify';
-import Button from '@/components/atoms/Button';
-import { Card } from '@/components/atoms/Card';
-import Modal from '@/components/atoms/Modal';
-import Input from '@/components/atoms/Input';
-import Badge from '@/components/atoms/Badge';
-import SearchBar from '@/components/molecules/SearchBar';
-import FormField from '@/components/molecules/FormField';
-import Loading from '@/components/ui/Loading';
-import Empty from '@/components/ui/Empty';
-import Error from '@/components/ui/Error';
-import ApperIcon from '@/components/ApperIcon';
-import { teachersService } from '@/services/api/teachersService';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { Card } from "@/components/atoms/Card";
+import { teachersService } from "@/services/api/teachersService";
+import ApperIcon from "@/components/ApperIcon";
+import Modal from "@/components/atoms/Modal";
+import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
+import Badge from "@/components/atoms/Badge";
+import SearchBar from "@/components/molecules/SearchBar";
+import FormField from "@/components/molecules/FormField";
+import Error from "@/components/ui/Error";
+import Empty from "@/components/ui/Empty";
+import Loading from "@/components/ui/Loading";
 
 const Teachers = () => {
   const [teachers, setTeachers] = useState([]);
@@ -48,11 +48,11 @@ const Teachers = () => {
     }
   };
 
-  const filteredTeachers = teachers.filter(teacher => {
-    const matchesSearch = (teacher.name?.toLowerCase() ?? '').includes(searchTerm.toLowerCase()) ||
-                         (teacher.email?.toLowerCase() ?? '').includes(searchTerm.toLowerCase()) ||
-                         (teacher.department?.toLowerCase() ?? '').includes(searchTerm.toLowerCase()) ||
-                         (teacher.employeeId?.toLowerCase() ?? '').includes(searchTerm.toLowerCase());
+const filteredTeachers = teachers.filter(teacher => {
+    const matchesSearch = (teacher.name_c?.toLowerCase() ?? '').includes(searchTerm.toLowerCase()) ||
+                         (teacher.email_c?.toLowerCase() ?? '').includes(searchTerm.toLowerCase()) ||
+                         (teacher.department_c?.toLowerCase() ?? '').includes(searchTerm.toLowerCase()) ||
+                         (teacher.employee_id_c?.toLowerCase() ?? '').includes(searchTerm.toLowerCase());
     
     return matchesSearch;
   });
@@ -89,20 +89,20 @@ const Teachers = () => {
     }
   };
 
-  const handleEdit = (teacher) => {
+const handleEdit = (teacher) => {
     setEditingTeacher(teacher);
     setFormData({
-      name: teacher.name ?? '',
-      email: teacher.email ?? '',
-      phone: teacher.phone ?? '',
-      department: teacher.department ?? '',
-      employeeId: teacher.employeeId ?? ''
+      name: teacher.name_c ?? '',
+      email: teacher.email_c ?? '',
+      phone: teacher.phone_c ?? '',
+      department: teacher.department_c ?? '',
+      employeeId: teacher.employee_id_c ?? ''
     });
     setIsEditModalOpen(true);
   };
 
-  const handleDelete = async (teacher) => {
-    if (window.confirm(`Are you sure you want to delete ${teacher.name ?? 'this teacher'}?`)) {
+const handleDelete = async (teacher) => {
+    if (window.confirm(`Are you sure you want to delete ${teacher.name_c ?? 'this teacher'}?`)) {
       try {
         await teachersService.delete(teacher.Id);
         setTeachers(prev => prev.filter(t => t.Id !== teacher.Id));
@@ -182,9 +182,9 @@ const Teachers = () => {
                     <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
                       <ApperIcon name="UserCheck" size={20} className="text-green-600" />
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900">{teacher.name ?? ''}</h3>
-                      <p className="text-sm text-gray-600">{teacher.email ?? ''}</p>
+<div>
+                      <h3 className="font-semibold text-gray-900">{teacher.name_c ?? ''}</h3>
+                      <p className="text-sm text-gray-600">{teacher.email_c ?? ''}</p>
                     </div>
                   </div>
                   <div className="flex space-x-2">
@@ -208,19 +208,18 @@ const Teachers = () => {
                 </div>
 
                 <div className="space-y-3">
-                  <div className="flex justify-between items-center">
+<div className="flex justify-between items-center">
                     <span className="text-sm text-gray-600">Department:</span>
-                    <Badge variant="secondary">{teacher.department ?? 'N/A'}</Badge>
+                    <Badge variant="secondary">{teacher.department_c ?? 'N/A'}</Badge>
                   </div>
                   
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-600">Employee ID:</span>
-                    <Badge variant="outline">{teacher.employeeId ?? 'N/A'}</Badge>
+                    <Badge variant="outline">{teacher.employee_id_c ?? 'N/A'}</Badge>
                   </div>
-                  
-                  <div className="flex justify-between items-center">
+<div className="flex justify-between items-center">
                     <span className="text-sm text-gray-600">Phone:</span>
-                    <span className="text-sm font-medium">{teacher.phone ?? 'N/A'}</span>
+                    <span className="text-sm font-medium">{teacher.phone_c ?? 'N/A'}</span>
                   </div>
                 </div>
               </Card>
